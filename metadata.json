@@ -1,0 +1,7 @@
+{
+  "name": "Search Matrix by eyeroniq",
+  "description": "A matrix-themed application in pink and magenta to find local businesses using Gemini with Google Maps grounding. Features a loading modal, paginated results, and CSV export.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
