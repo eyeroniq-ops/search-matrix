@@ -10,7 +10,10 @@ interface BusinessListProps {
 const BusinessCard: React.FC<{ business: Business }> = ({ business }) => (
     <div className="bg-black/60 backdrop-blur-sm border border-[#E4007C]/50 rounded-lg p-4 flex flex-col justify-between transition-all duration-300 hover:border-[#E4007C] hover:shadow-[0_0_15px_rgba(228,0,124,0.6)]">
         <div>
-            <h3 className="text-xl font-bold text-[#E4007C]">{business.name}</h3>
+            <div className="flex justify-between items-start mb-2">
+                <h3 className="text-xl font-bold text-[#E4007C] mr-2">{business.name}</h3>
+                <span className="text-xs bg-[#E4007C]/20 text-[#E4007C] px-2 py-1 rounded-full flex-shrink-0 whitespace-nowrap">{business.source}</span>
+            </div>
             <p className="text-sm text-[#E4007C]/80 mb-2">{business.category}</p>
             <p className="text-[#E4007C] mt-2"><strong className="text-[#E4007C]/80">Services/Products:</strong> {business.servicesOrProducts.join(', ')}</p>
             <p className="text-[#E4007C] mt-1"><strong className="text-[#E4007C]/80">Address:</strong> {business.address}</p>
@@ -23,9 +26,16 @@ const BusinessCard: React.FC<{ business: Business }> = ({ business }) => (
                 <strong className="text-[#E4007C]/80">Web:</strong> {business.websiteOrSocialMedia}
               </a>
             )}
-            <a href={business.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="text-[#E4007C] hover:text-[#E4007C]/80 transition-colors mt-2 block font-semibold">
-                View on Google Maps &rarr;
-            </a>
+            {business.googleMapsUrl && (
+                <a href={business.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="text-[#E4007C] hover:text-[#E4007C]/80 transition-colors mt-2 block font-semibold">
+                    View on Google Maps &rarr;
+                </a>
+            )}
+            {business.yelpUrl && (
+              <a href={business.yelpUrl} target="_blank" rel="noopener noreferrer" className="text-[#E4007C] hover:text-[#E4007C]/80 transition-colors mt-1 block font-semibold">
+                View on Yelp &rarr;
+              </a>
+            )}
         </div>
     </div>
 );
@@ -34,12 +44,20 @@ const BusinessList: React.FC<BusinessListProps> = ({ results, loading, error }) 
 
     const convertToCSV = (data: Business[]) => {
         if (!data || data.length === 0) return '';
-        const headers = Object.keys(data[0]).join(',');
+        const headers = ['name', 'category', 'servicesOrProducts', 'phone', 'email', 'address', 'googleMapsUrl', 'websiteOrSocialMedia', 'source', 'yelpUrl'].join(',');
         const rows = data.map(row => 
-            Object.values(row).map(value => {
-                if (Array.isArray(value)) {
-                    return `"${value.join('; ')}"`;
-                }
+            [
+                row.name,
+                row.category,
+                Array.isArray(row.servicesOrProducts) ? row.servicesOrProducts.join('; ') : '',
+                row.phone,
+                row.email,
+                row.address,
+                row.googleMapsUrl || '',
+                row.websiteOrSocialMedia,
+                row.source,
+                row.yelpUrl || ''
+            ].map(value => {
                 const strValue = String(value).replace(/"/g, '""');
                 return `"${strValue}"`;
             }).join(',')
@@ -75,7 +93,7 @@ const BusinessList: React.FC<BusinessListProps> = ({ results, loading, error }) 
     }
 
     if (error) {
-        return <div className="text-center p-10 text-[#E4007C] bg-[#E4007C]/10 border border-[#E4007C] rounded-lg">{error}</div>;
+        return <div className="text-center p-10 text-[#E4007C] bg-[#E4007C]/10 border border-[#E4007C] rounded-lg whitespace-pre-wrap">{error}</div>;
     }
     
     if (results.length === 0) {

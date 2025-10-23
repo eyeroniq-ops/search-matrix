@@ -5,8 +5,10 @@ export interface Business {
   phone: string;
   email: string;
   address: string;
-  googleMapsUrl: string;
+  googleMapsUrl?: string;
   websiteOrSocialMedia: string;
+  source: string; // 'Google', 'Yelp', or 'Google & Yelp'
+  yelpUrl?: string;
 }
 
 export interface SearchParams {

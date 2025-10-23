@@ -66,7 +66,7 @@ export const findBusinesses = async (
     const jsonText = text.replace(/^```json\s*/, '').replace(/```$/, '');
 
     const businesses = JSON.parse(jsonText);
-    return businesses as Business[];
+    return (businesses as any[]).map(b => ({ ...b, source: 'Google' })) as Business[];
 
   } catch (error) {
     console.error("Error calling Gemini API:", error);
