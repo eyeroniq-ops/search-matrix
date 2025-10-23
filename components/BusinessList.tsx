@@ -92,7 +92,7 @@ const BusinessList: React.FC<BusinessListProps> = ({ results, loading, error }) 
         return <div className="text-center p-10 text-[#E4007C] text-lg">Initializing eyeroniq Search Matrix...</div>;
     }
 
-    if (error) {
+    if (error && results.length === 0) {
         return <div className="text-center p-10 text-[#E4007C] bg-[#E4007C]/10 border border-[#E4007C] rounded-lg whitespace-pre-wrap">{error}</div>;
     }
     
@@ -102,6 +102,11 @@ const BusinessList: React.FC<BusinessListProps> = ({ results, loading, error }) 
     
     return (
         <div className="space-y-8">
+            {error && (
+                <div className="text-center p-4 text-[#E4007C] bg-[#E4007C]/10 border border-[#E4007C] rounded-lg whitespace-pre-wrap">
+                    {error}
+                </div>
+            )}
             {results.length > 0 && (
                 <div className="text-center">
                     <button onClick={handleExportAll} className="bg-[#E4007C] text-black font-bold py-2 px-4 rounded-lg hover:bg-[#E4007C]/80 transition-all shadow-[0_0_10px_rgba(228,0,124,0.7)]">

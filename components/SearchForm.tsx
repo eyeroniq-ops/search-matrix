@@ -29,6 +29,11 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, loading, onUseLocatio
     onSearch({ category, niche, address, radius, price, reviews, keywords });
   };
   
+  const handleUseLocationClick = () => {
+    onUseLocation();
+    setAddress(''); // Clear address field to prioritize geolocation
+  };
+
   const commonInputClass = "bg-black border border-[#E4007C] text-[#E4007C] placeholder-[#E4007C]/70 rounded-lg focus:ring-[#E4007C] focus:border-[#E4007C] block w-full p-2.5 transition-all duration-300 shadow-[0_0_5px_rgba(228,0,124,0.5)] focus:shadow-[0_0_10px_rgba(228,0,124,0.8)]";
   const commonLabelClass = "block mb-2 font-medium text-[#E4007C]";
 
@@ -53,7 +58,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, loading, onUseLocatio
         <label htmlFor="address" className={commonLabelClass}>Address or Area</label>
          <div className="flex gap-2">
             <input type="text" id="address" value={address} onChange={(e) => setAddress(e.target.value)} className={commonInputClass} placeholder="e.g., San Francisco, CA" />
-            <button type="button" onClick={onUseLocation} title="Use my current location" className="p-2.5 bg-[#E4007C] hover:bg-[#E4007C]/80 text-black rounded-lg transition-colors shadow-lg hover:shadow-[#E4007C]/50">
+            <button type="button" onClick={handleUseLocationClick} title="Use my current location" className="p-2.5 bg-[#E4007C] hover:bg-[#E4007C]/80 text-black rounded-lg transition-colors shadow-lg hover:shadow-[#E4007C]/50">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" /></svg>
             </button>
         </div>
